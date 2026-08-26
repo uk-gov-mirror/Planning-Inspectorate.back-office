@@ -744,9 +744,8 @@ export async function viewApplicationsCaseDocumentationSearchPage(
 export async function viewFolderCreationPage(request, response) {
 	const { caseId } = response.locals;
 	const { folderId } = request.params;
-	let parentFolder = null;
 	if (folderId) {
-		parentFolder = await getCaseFolder(caseId, parseInt(folderId));
+		const parentFolder = await getCaseFolder(caseId, parseInt(folderId));
 		if (redirectIfGisShapefilesFolder(response, caseId, parentFolder)) return;
 	}
 	const backLink =
@@ -943,7 +942,7 @@ export async function viewAndPostApplicationsCaseDocumentationMove(request, resp
 		});
 	}
 
-	let documentationFilesToMove = [];
+	let documentationFilesToMove;
 
 	if (documentationSessionHandlers.getSessionMoveDocumentsFilesToMove(session).length) {
 		documentationFilesToMove =
