@@ -8,6 +8,7 @@ import {
 	examinationLibrarySections,
 	placeHolderDynamicSections
 } from './examination-library.constants.js';
+import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import {
 	getSectionByItemSlug,
 	getCategoryCode,
@@ -54,7 +55,7 @@ export async function getExaminationLibraryPublish(request, response) {
 		sortBy,
 		pageSize: pageSizeNumber,
 		page: pageNumber,
-		publishedStatus: 'published'
+		publishedStatus: APPLICATION_STATUS.PUBLISHED
 	});
 
 	const allQueryString = buildQueryString({

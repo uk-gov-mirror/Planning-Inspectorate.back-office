@@ -1,3 +1,5 @@
+import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
+
 /**
  * @typedef {import('./applications-examination-library-index.view-model.js').ExaminationLibraryItem} ExaminationLibraryItem
  */
@@ -13,15 +15,23 @@
 /**
  * Examination Library category codes for documents
  *
- * @type {{APP: string, AoC: string, PD: string, AS: string, OD: string}}
+ * @type {{APP: string, AoC: string, PD: string, AS: string, OD: string, RR: string}}
  */
 export const categoryCodes = {
 	APP: 'application-documents',
 	AoC: 'adequacy-of-consultation-responses',
 	PD: 'procedural-decisions',
 	AS: 'additional-submissions',
-	OD: 'other-documents'
+	OD: 'other-documents',
+	RR: 'relevant-representations'
 };
+
+/**
+ * Default section status for Examination Library categories
+ *
+ * @type {import('@pins/applications/lib/status-utils.js').ApplicationStatus}
+ */
+export const DEFAULT_SECTION_STATUS = APPLICATION_STATUS.IN_PROGRESS;
 
 /**
  * @type {string}
@@ -153,31 +163,6 @@ export const examinationLibrarySections = [
 		tableHeaders: tableHeadersWithAuthor
 	}
 ];
-
-/**
- * Placeholder section statuses for the Examination Library.
- *
- * These are temporary static values used until the service layer
- * is implemented to fetch statuses from the database.
- */
-/** @type {Array<{slug: string, status: import('@pins/applications/lib/status-utils.js').ApplicationStatus}>} */
-export const placeholderSectionStatuses = [
-	{ slug: 'application-documents', status: 'published' },
-	{ slug: 'adequacy-of-consultation-responses', status: 'published' },
-	{ slug: 'relevant-representations', status: 'published' },
-	{ slug: 'procedural-decisions', status: 'published' },
-	{ slug: 'additional-submissions', status: 'published' },
-	{ slug: 'other-documents', status: 'published' }
-];
-
-/**
- * Placeholder section status for Examination Library category subpages
- *
- * This is a temporary static value in use until the status can be fetched from the database
- *
- * @type {string}
- */
-export const placeholderSectionStatus = 'Draft';
 
 /**
  * Placeholder data for dynamic Examination Library categories

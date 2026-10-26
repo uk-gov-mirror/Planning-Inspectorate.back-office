@@ -4,9 +4,11 @@ import {
 	getSectionByItemSlug,
 	getCategoryCode,
 	getDocumentDescriptionHTML,
-	tableSortLinks
+	tableSortLinks,
+	formatCategoryStatus
 } from '../applications-examination-library-utils.js';
 import { categoryCodes, examinationLibrarySections } from '../examination-library.constants.js';
+import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import { fixtureDynamicSections } from '../../../../../../testing/applications/fixtures/examination-library.js';
 
 describe('applications examination library utils', () => {
@@ -276,6 +278,33 @@ describe('applications examination library utils', () => {
 			expect(result[0].link).toContain('sortBy=-description');
 			expect(result[0].link).toContain('page=1');
 			expect(result[0].link).toContain('pageSize=50');
+		});
+	});
+
+	describe('#formatCategoryStatus', () => {
+		it('should return in-progress for null, undefined, or empty status', () => {
+			expect(formatCategoryStatus(null)).toBe(APPLICATION_STATUS.IN_PROGRESS);
+			expect(formatCategoryStatus(undefined)).toBe(APPLICATION_STATUS.IN_PROGRESS);
+			expect(formatCategoryStatus('')).toBe(APPLICATION_STATUS.IN_PROGRESS);
+		});
+
+		it('should normalize DB "in progress" to "in-progress"', () => {
+			expect(formatCategoryStatus('in progress')).toBe(APPLICATION_STATUS.IN_PROGRESS);
+			expect(formatCategoryStatus('IN PROGRESS')).toBe(APPLICATION_STATUS.IN_PROGRESS);
+		});
+
+		it('should normalize "published"', () => {
+			expect(formatCategoryStatus('published')).toBe(APPLICATION_STATUS.PUBLISHED);
+			expect(formatCategoryStatus('PUBLISHED')).toBe(APPLICATION_STATUS.PUBLISHED);
+		});
+
+		it('should normalize "unpublished"', () => {
+			expect(formatCategoryStatus('unpublished')).toBe(APPLICATION_STATUS.UNPUBLISHED);
+			expect(formatCategoryStatus('UNPUBLISHED')).toBe(APPLICATION_STATUS.UNPUBLISHED);
+		});
+
+		it('should fallback to in-progress for unknown statuses', () => {
+			expect(formatCategoryStatus('unknown_status')).toBe(APPLICATION_STATUS.IN_PROGRESS);
 		});
 	});
 });

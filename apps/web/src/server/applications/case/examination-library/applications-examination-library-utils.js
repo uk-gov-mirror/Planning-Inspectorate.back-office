@@ -1,4 +1,5 @@
 import { mergeSections } from './applications-examination-library-index.view-model.js';
+import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import { url } from '../../../lib/nunjucks-filters/index.js';
 import {
 	getResultsPerPage,
@@ -36,7 +37,7 @@ export const getSectionByItemSlug = (staticSections, dynamicSections, itemSlug) 
 /**
  * Get Examination Library category code
  *
- * @param {ExaminationLibrarySection} section
+ * @param {ExaminationLibrarySection | ExaminationLibraryDynamicSection} section
  * @param {object} categoryCodes
  * @returns {string}
  */
@@ -163,3 +164,26 @@ export const tableSortLinks = (query, headers, sectionUrl, isPublished) =>
 				return tableSortingHeaderLinks(query, header, '', sectionUrl);
 		}
 	});
+
+/**
+ * Normalizes an Examination Library category status from the database/API to ApplicationStatus.
+ *
+ * @param {string | undefined | null} status
+ * @returns {import('@pins/applications/lib/status-utils.js').ApplicationStatus}
+ */
+export const formatCategoryStatus = (status) => {
+	if (!status) {
+		return APPLICATION_STATUS.IN_PROGRESS;
+	}
+	const normalized = status.toLowerCase().replace(/\s+/g, '-');
+	if (
+		normalized === APPLICATION_STATUS.IN_PROGRESS ||
+		normalized === APPLICATION_STATUS.PUBLISHED ||
+		normalized === APPLICATION_STATUS.UNPUBLISHED
+	) {
+		return /** @type {import('@pins/applications/lib/status-utils.js').ApplicationStatus} */ (
+			normalized
+		);
+	}
+	return APPLICATION_STATUS.IN_PROGRESS;
+};

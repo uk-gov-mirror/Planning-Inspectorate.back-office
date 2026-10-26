@@ -1,12 +1,16 @@
-import { getExaminationLibraryDocumentsByCategory } from './applications-examination-library.service.js';
+import {
+	getExaminationLibraryCategories,
+	getExaminationLibraryDocumentsByCategory
+} from './applications-examination-library.service.js';
 import { getExaminationLibrarySectionViewModel } from './applications-examination-library-section.view-model.js';
 import {
 	categoryCodes,
 	examinationLibrarySections,
-	placeHolderDynamicSections,
-	placeholderSectionStatus
+	placeHolderDynamicSections
 } from './examination-library.constants.js';
+import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import {
+	formatCategoryStatus,
 	getSectionByItemSlug,
 	getCategoryCode,
 	getExaminationLibraryPagination
@@ -43,37 +47,39 @@ export async function getExaminationLibrarySection(request, response) {
 
 	const sectionCategoryCode = getCategoryCode(section, categoryCodes);
 
-	/** @type {ExaminationLibraryDocumentVersion[]} */
-	let sectionDocuments = [];
-	let documentsResponse = {
-		page: pageNumber,
+	const queryString = buildQueryString({
+		sortBy,
 		pageSize: pageSizeNumber,
-		pageCount: 1,
-		itemCount: 0,
-		items: []
-	};
+		page: pageNumber
+	});
 
-	if (sectionCategoryCode) {
-		const queryString = buildQueryString({
-			sortBy,
-			pageSize,
-			page
-		});
+	const [documentsResponse, categoriesResponse] = await Promise.all([
+		sectionCategoryCode
+			? getExaminationLibraryDocumentsByCategory(caseId, sectionCategoryCode, queryString)
+			: Promise.resolve({
+					page: pageNumber,
+					pageSize: pageSizeNumber,
+					pageCount: 1,
+					itemCount: 0,
+					items: []
+				}),
+		sectionCategoryCode
+			? getExaminationLibraryCategories(caseIdNumber, { categoryCode: sectionCategoryCode }).catch(
+					() => []
+				)
+			: Promise.resolve([])
+	]);
 
-		documentsResponse = await getExaminationLibraryDocumentsByCategory(
-			caseId,
-			sectionCategoryCode,
-			queryString
-		);
+	/** @type {ExaminationLibraryDocumentVersion[]} */
+	const sectionDocuments = documentsResponse?.items ?? [];
 
-		sectionDocuments = documentsResponse.items;
-	}
-
+	const matchingCategory = categoriesResponse?.find((c) => c.categoryCode === sectionCategoryCode);
+	const dbCategoryStatus = matchingCategory?.publishedStatus;
 	const isPublishedQuery = request.query.published === 'true';
-	const sectionStatus =
-		/** @type {import('@pins/applications/lib/status-utils.js').ApplicationStatus} */ (
-			isPublishedQuery ? 'published' : placeholderSectionStatus
-		);
+
+	const sectionStatus = isPublishedQuery
+		? APPLICATION_STATUS.PUBLISHED
+		: formatCategoryStatus(dbCategoryStatus);
 
 	const sectionUrl = url('examination-library-section', { caseId: caseIdNumber, slug: itemSlug });
 	const publishUrl = url('examination-library-publish', { caseId: caseIdNumber, slug: itemSlug });

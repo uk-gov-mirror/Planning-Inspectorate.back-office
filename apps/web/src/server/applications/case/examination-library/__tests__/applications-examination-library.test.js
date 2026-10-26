@@ -4,8 +4,8 @@ import nock from 'nock';
 import supertest from 'supertest';
 import { createTestEnvironment } from '../../../../../../testing/index.js';
 import { fixtureExaminationLibraryIndex } from '../../../../../../testing/applications/fixtures/examination-library.js';
-import { placeholderSectionStatuses } from '../examination-library.constants.js';
 import staticFlags from '@pins/feature-flags/src/static-feature-flags.js';
+import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 
 const { app, installMockApi, teardown } = createTestEnvironment();
 const request = supertest(app);
@@ -14,8 +14,50 @@ const nocks = ({ includeDocuments = true } = {}) => {
 	nock('http://test/').get('/applications').reply(200, []);
 	nock('http://test/').get('/applications/123').reply(200, fixtureExaminationLibraryIndex.caseData);
 	nock('http://test/')
-		.get('/applications/123/examination-library/section-statuses')
-		.reply(200, placeholderSectionStatuses);
+		.get('/applications/123/examination-library')
+		.query({ categoryCode: 'APP' })
+		.reply(200, [
+			{
+				categoryCode: 'APP',
+				categoryName: 'Application form',
+				publishedStatus: 'in progress'
+			}
+		]);
+	nock('http://test/')
+		.get('/applications/123/examination-library')
+		.query(true)
+		.reply(200, [
+			{
+				categoryCode: 'APP',
+				categoryName: 'Application form',
+				publishedStatus: APPLICATION_STATUS.PUBLISHED
+			},
+			{
+				categoryCode: 'AoC',
+				categoryName: 'Adequacy of consultation responses',
+				publishedStatus: APPLICATION_STATUS.PUBLISHED
+			},
+			{
+				categoryCode: 'PD',
+				categoryName: 'Procedural decisions and notifications from Examining Authority',
+				publishedStatus: APPLICATION_STATUS.PUBLISHED
+			},
+			{
+				categoryCode: 'AS',
+				categoryName: 'Additional submissions',
+				publishedStatus: APPLICATION_STATUS.PUBLISHED
+			},
+			{
+				categoryCode: 'OD',
+				categoryName: 'Other documents',
+				publishedStatus: APPLICATION_STATUS.PUBLISHED
+			},
+			{
+				categoryCode: 'RR',
+				categoryName: 'Relevant representations',
+				publishedStatus: APPLICATION_STATUS.PUBLISHED
+			}
+		]);
 
 	if (includeDocuments) {
 		nock('http://test/')

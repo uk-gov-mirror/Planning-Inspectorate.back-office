@@ -5,6 +5,18 @@ import { get, post } from '../../../lib/request.js';
  */
 
 /**
+ * Get examination library categories for a case
+ *
+ * @param {string | number} caseId
+ * @param {{ categoryCode?: string }} [filters]
+ * @returns {Promise<Array<{ id: number, caseId: number, categoryCode: string, categoryName: string, publishedStatus: string, examinationTimetableItemId?: number | null }>>}
+ */
+export async function getExaminationLibraryCategories(caseId, filters = {}) {
+	const query = filters.categoryCode ? `?categoryCode=${filters.categoryCode}` : '';
+	return get(`applications/${caseId}/examination-library${query}`);
+}
+
+/**
  * Get examination library section statuses for a case
  *
  * @param {number} caseId

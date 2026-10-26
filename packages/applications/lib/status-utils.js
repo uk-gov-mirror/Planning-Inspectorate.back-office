@@ -1,6 +1,21 @@
 /**
+ * Application status constants
+ * @readonly
+ * @enum {string}
+ */
+export const APPLICATION_STATUS = Object.freeze({
+	DRAFT: 'draft',
+	IN_PROGRESS: 'in-progress',
+	READY_TO_PUBLISH: 'ready-to-publish',
+	PUBLISHED: 'published',
+	READY_TO_UNPUBLISH: 'ready-to-unpublish',
+	UNPUBLISHED: 'unpublished',
+	ARCHIVED: 'archived'
+});
+
+/**
  * Application status types used across the applications system
- * @typedef {'draft' | 'ready-to-publish' | 'published' | 'ready-to-unpublish' | 'unpublished' | 'archived'} ApplicationStatus
+ * @typedef {'draft' | 'in-progress' | 'ready-to-publish' | 'published' | 'ready-to-unpublish' | 'unpublished' | 'archived'} ApplicationStatus
  */
 
 /**
@@ -13,12 +28,13 @@
  * @type {StatusTagClasses}
  */
 export const STATUS_TAG_CLASSES = {
-	draft: 'govuk-tag--grey',
-	'ready-to-publish': 'govuk-tag--blue',
-	published: 'govuk-tag--green',
-	'ready-to-unpublish': 'govuk-tag--yellow',
-	unpublished: 'govuk-tag--grey',
-	archived: 'govuk-tag--purple'
+	[APPLICATION_STATUS.DRAFT]: 'govuk-tag--grey',
+	[APPLICATION_STATUS.IN_PROGRESS]: 'govuk-tag--blue',
+	[APPLICATION_STATUS.READY_TO_PUBLISH]: 'govuk-tag--blue',
+	[APPLICATION_STATUS.PUBLISHED]: 'govuk-tag--green',
+	[APPLICATION_STATUS.READY_TO_UNPUBLISH]: 'govuk-tag--yellow',
+	[APPLICATION_STATUS.UNPUBLISHED]: 'govuk-tag--grey',
+	[APPLICATION_STATUS.ARCHIVED]: 'govuk-tag--purple'
 };
 
 /**
@@ -37,12 +53,13 @@ export const getStatusTagClass = (status) => {
  */
 export const getStatusDisplayName = (status) => {
 	const displayNames = {
-		draft: 'Draft',
-		'ready-to-publish': 'Ready to publish',
-		published: 'Published',
-		'ready-to-unpublish': 'Ready to unpublish',
-		unpublished: 'Unpublished',
-		archived: 'Archived'
+		[APPLICATION_STATUS.DRAFT]: 'Draft',
+		[APPLICATION_STATUS.IN_PROGRESS]: 'In progress',
+		[APPLICATION_STATUS.READY_TO_PUBLISH]: 'Ready to publish',
+		[APPLICATION_STATUS.PUBLISHED]: 'Published',
+		[APPLICATION_STATUS.READY_TO_UNPUBLISH]: 'Ready to unpublish',
+		[APPLICATION_STATUS.UNPUBLISHED]: 'Unpublished',
+		[APPLICATION_STATUS.ARCHIVED]: 'Archived'
 	};
 	return displayNames[status] || status;
 };

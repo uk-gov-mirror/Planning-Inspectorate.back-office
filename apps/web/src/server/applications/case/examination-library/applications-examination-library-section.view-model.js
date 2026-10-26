@@ -1,5 +1,5 @@
 import { examinationLibrarySections } from './examination-library.constants.js';
-import { getStatusDisplayName } from '@pins/applications/lib/status-utils.js';
+import { APPLICATION_STATUS, getStatusDisplayName } from '@pins/applications/lib/status-utils.js';
 import { buildTable } from '../../../lib/table-mapper.js';
 import { statusName } from '../../../lib/nunjucks-filters/status-name.js';
 import { url } from '../../../lib/nunjucks-filters/index.js';
@@ -48,11 +48,13 @@ export const getExaminationLibrarySectionViewModel = ({
 		return null;
 	}
 
+	const isPublished = sectionStatus === APPLICATION_STATUS.PUBLISHED;
+
 	const tableHeaders = section.tableHeaders.map((header) =>
-		header === 'Reference' && sectionStatus !== 'published' ? 'Draft reference' : header
+		header === 'Reference' && !isPublished ? 'Draft reference' : header
 	);
 
-	const sortLinks = tableSortLinks(query, tableHeaders, sectionUrl, sectionStatus === 'published');
+	const sortLinks = tableSortLinks(query, tableHeaders, sectionUrl, isPublished);
 
 	const item = section.items.find((item) => item.href === itemSlug);
 

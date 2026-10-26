@@ -1,12 +1,13 @@
 //@ts-nocheck
 import { getExaminationLibrarySectionViewModel } from '../applications-examination-library-section.view-model.js';
+import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import { fixtureDynamicSections } from '../../../../../../testing/applications/fixtures/examination-library.js';
 
 describe('applications examination library section view model', () => {
 	describe('#getExaminationLibrarySectionViewModel', () => {
 		const dynamicSections = fixtureDynamicSections;
-		const draftSectionStatus = 'draft';
-		const publishedSectionStatus = 'published';
+		const draftSectionStatus = APPLICATION_STATUS.DRAFT;
+		const publishedSectionStatus = APPLICATION_STATUS.PUBLISHED;
 		const baseDocument = {
 			caseId: 123,
 			folderId: 1,
