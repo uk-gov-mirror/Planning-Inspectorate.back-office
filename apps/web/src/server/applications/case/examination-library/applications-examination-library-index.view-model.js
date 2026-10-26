@@ -64,7 +64,7 @@ export const mapItemToViewModel = (item, caseId, sectionStatus) => ({
 		status: {
 			tag: {
 				text: getStatusDisplayName(sectionStatus),
-				classes: getStatusTagClass(sectionStatus)
+				classes: `${getStatusTagClass(sectionStatus)} single-line`
 			}
 		}
 	})
