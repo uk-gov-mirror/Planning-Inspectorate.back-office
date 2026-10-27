@@ -136,7 +136,7 @@ describe('applications examination library section view model', () => {
 						firstCellIsHeader: false,
 						rows: [
 							[
-								{ text: '' },
+								{ text: 'APP-001' },
 								{ text: 'Document has been deleted' },
 								{ text: '' },
 								{ text: '' },

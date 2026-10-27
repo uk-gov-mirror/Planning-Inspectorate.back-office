@@ -106,7 +106,7 @@ describe('applications examination library publish view model', () => {
 			});
 
 			expect(result.sectionTable.rows[0]).toEqual([
-				{ text: '' },
+				{ html: '<strong>APP-001</strong>' },
 				{ text: 'Document has been deleted' },
 				{ text: '' }
 			]);

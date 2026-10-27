@@ -72,6 +72,19 @@ export const getExaminationLibrarySectionViewModel = ({
 			const includeAuthor = tableHeaders.includes('From');
 			const documentIsDeleted = sectionDocument.isDeleted;
 
+			const documentReference =
+				sectionDocument.latestDocumentVersion.examinationRefNo ??
+				sectionDocument.latestDocumentVersion.draftExaminationLibraryReference ??
+				'';
+
+			if (documentIsDeleted) {
+				return [
+					{ text: documentReference },
+					{ text: 'Document has been deleted' },
+					...Array(tableHeaders.length - 2).fill({ text: '' })
+				];
+			}
+
 			const documentPropertiesURL = url('document', {
 				caseId: sectionDocument.caseId,
 				folderId: sectionDocument.folderId,
@@ -80,24 +93,12 @@ export const getExaminationLibrarySectionViewModel = ({
 			});
 
 			const tableRow = [
-				{
-					text:
-						sectionDocument.latestDocumentVersion.examinationRefNo ??
-						sectionDocument.latestDocumentVersion.draftExaminationLibraryReference
-				},
+				{ text: documentReference },
 				{ html: getDocumentDescriptionHTML(sectionDocument) },
 				...(includeAuthor ? [{ text: sectionDocument.latestDocumentVersion.author }] : []),
 				{ text: statusName(sectionDocument.latestDocumentVersion.publishedStatus) },
 				{ html: `<a href="${documentPropertiesURL}" class="govuk-link">Review</a>` }
 			];
-
-			if (documentIsDeleted) {
-				return [
-					{ text: '' },
-					{ text: 'Document has been deleted' },
-					...Array(tableHeaders.length - 2).fill({ text: '' })
-				];
-			}
 
 			return tableRow;
 		}),

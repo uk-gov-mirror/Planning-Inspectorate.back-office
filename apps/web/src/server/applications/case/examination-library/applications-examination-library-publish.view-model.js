@@ -57,15 +57,15 @@ export const getExaminationLibraryPublishViewModel = ({
 			return [];
 		}
 
-		if (sectionDocument.isDeleted) {
-			return [{ text: '' }, { text: 'Document has been deleted' }, { text: '' }];
-		}
-
 		const ref =
-			sectionDocument.latestDocumentVersion.draftExaminationLibraryReference ||
 			sectionDocument.latestDocumentVersion.examinationRefNo ||
+			sectionDocument.latestDocumentVersion.draftExaminationLibraryReference ||
 			'';
 		const refCell = ref ? { html: `<strong>${ref}</strong>` } : { text: '' };
+
+		if (sectionDocument.isDeleted) {
+			return [refCell, { text: 'Document has been deleted' }, { text: '' }];
+		}
 
 		const documentPropertiesURL = url('document', {
 			caseId: sectionDocument.caseId,
