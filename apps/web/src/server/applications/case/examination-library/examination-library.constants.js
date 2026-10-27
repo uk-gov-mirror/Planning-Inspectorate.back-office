@@ -54,6 +54,7 @@ export const NO_EXAMINATION_LIBRARY_CATEGORY_CODE = 'NELC';
  *
  * @type {string[]}
  */
+// TODO: Column header "Status" should be renamed to "Document status" to distinguish from category status
 const tableHeadersWithAuthor = ['Reference', 'Document description', 'From', 'Status', 'Actions'];
 
 /**

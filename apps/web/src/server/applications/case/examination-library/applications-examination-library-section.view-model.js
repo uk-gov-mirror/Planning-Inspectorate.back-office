@@ -46,6 +46,7 @@ export const getExaminationLibrarySectionViewModel = ({
 
 	const isPublished = sectionStatus === 'published';
 
+	// TODO: Table header "Status" should be renamed to "Document status" to distinguish from category status
 	const tableHeaders = section.tableHeaders.map((header) =>
 		header === 'Reference' && !isPublished ? 'Draft reference' : header
 	);
