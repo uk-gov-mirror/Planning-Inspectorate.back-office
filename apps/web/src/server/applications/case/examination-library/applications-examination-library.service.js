@@ -1,4 +1,5 @@
 import { get, post } from '../../../lib/request.js';
+import { buildQueryString } from '../../common/components/build-query-string.js';
 
 /**
  * @typedef {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus} ExaminationLibraryCategoryStatus
@@ -12,8 +13,8 @@ import { get, post } from '../../../lib/request.js';
  * @returns {Promise<Array<{ id: number, caseId: number, categoryCode: string, categoryName: string, publishedStatus: string, examinationTimetableItemId?: number | null }>>}
  */
 export async function getExaminationLibraryCategories(caseId, filters = {}) {
-	const query = filters.categoryCode ? `?categoryCode=${filters.categoryCode}` : '';
-	return get(`applications/${caseId}/examination-library${query}`);
+	const queryString = buildQueryString(filters);
+	return get(`applications/${caseId}/examination-library${queryString ? `?${queryString}` : ''}`);
 }
 
 /**
