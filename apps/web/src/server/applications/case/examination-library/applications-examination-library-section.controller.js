@@ -34,12 +34,11 @@ export async function getExaminationLibrarySection(request, response) {
 	const projectName = response.locals.case.title;
 
 	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
+	const sectionCategoryCode = section ? getCategoryCode(section, categoryCodes) : '';
 
-	if (!section) {
+	if (!section || !sectionCategoryCode) {
 		return response.status(404).render('app/404');
 	}
-
-	const sectionCategoryCode = getCategoryCode(section, categoryCodes);
 
 	const queryString = buildQueryString({
 		sortBy,
@@ -48,20 +47,8 @@ export async function getExaminationLibrarySection(request, response) {
 	});
 
 	const [documentsResponse, categoriesResponse] = await Promise.all([
-		sectionCategoryCode
-			? getExaminationLibraryDocumentsByCategory(caseId, sectionCategoryCode, queryString)
-			: Promise.resolve({
-					page: pageNumber,
-					pageSize: pageSizeNumber,
-					pageCount: 1,
-					itemCount: 0,
-					items: []
-				}),
-		sectionCategoryCode
-			? getExaminationLibraryCategories(caseId, { categoryCode: sectionCategoryCode }).catch(
-					() => []
-				)
-			: Promise.resolve([])
+		getExaminationLibraryDocumentsByCategory(caseId, sectionCategoryCode, queryString),
+		getExaminationLibraryCategories(caseId, { categoryCode: sectionCategoryCode }).catch(() => [])
 	]);
 
 	/** @type {ExaminationLibraryDocumentVersion[]} */

@@ -33,15 +33,9 @@ export async function getExaminationLibraryPublish(request, response) {
 	const projectName = response.locals?.case?.title || '';
 
 	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
+	const sectionCategoryCode = section ? getCategoryCode(section, categoryCodes) : '';
 
-	if (!section) {
-		return response.status(404).render('app/404');
-	}
-
-	const sectionCategoryCode = getCategoryCode(section, categoryCodes);
-	const sectionItem = section.items.find((item) => item.href === itemSlug);
-
-	if (!sectionItem || !sectionCategoryCode) {
+	if (!section || !sectionCategoryCode) {
 		return response.status(404).render('app/404');
 	}
 
@@ -112,23 +106,15 @@ export async function postExaminationLibraryPublish(request, response) {
 	const caseId = response.locals?.caseId || Number(request.params?.caseId);
 
 	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
+	const sectionCategoryCode = section ? getCategoryCode(section, categoryCodes) : '';
 
-	if (!section) {
-		return response.status(404).render('app/404');
-	}
-
-	const sectionCategoryCode = getCategoryCode(section, categoryCodes);
-
-	if (!sectionCategoryCode) {
+	if (!section || !sectionCategoryCode) {
 		return response.status(404).render('app/404');
 	}
 
 	await publishExaminationLibraryCategory(caseId, { categoryCode: sectionCategoryCode });
 
-	const redirectUrl = `${url('examination-library-section', {
-		caseId,
-		slug: itemSlug
-	})}?published=true`;
-
-	return response.redirect(redirectUrl);
+	return response.redirect(
+		`${url('examination-library-section', { caseId, slug: itemSlug })}?published=true`
+	);
 }
