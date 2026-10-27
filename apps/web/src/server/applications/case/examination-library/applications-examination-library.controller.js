@@ -10,14 +10,13 @@ import { getCategoryCode } from './applications-examination-library-utils.js';
 /**
  * Get Examination Library index page
  *
- * @param {{ params: { caseId: string } }} request
- * @param {*} response
+ * @param {import('express').Request<{ caseId: string }>} request
+ * @param {import('express').Response<any, { caseId: number }>} response
  */
 export async function getExaminationLibraryIndex(request, response) {
-	const { caseId } = request.params;
-	const caseIdNumber = Number(caseId);
+	const caseId = response.locals?.caseId || Number(request.params?.caseId);
 
-	const categories = await getExaminationLibraryCategories(caseIdNumber).catch(() => []);
+	const categories = await getExaminationLibraryCategories(caseId).catch(() => []);
 
 	const sectionStatuses = examinationLibrarySections
 		.filter((section) => Boolean(getCategoryCode(section, categoryCodes)))
@@ -32,7 +31,7 @@ export async function getExaminationLibraryIndex(request, response) {
 		});
 
 	const indexViewModel = getExaminationLibraryIndexViewModel({
-		caseId: caseIdNumber,
+		caseId,
 		sectionStatuses
 	});
 

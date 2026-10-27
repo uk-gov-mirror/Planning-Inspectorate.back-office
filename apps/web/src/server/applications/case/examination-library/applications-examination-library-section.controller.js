@@ -21,13 +21,13 @@ import { url } from '../../../lib/nunjucks-filters/index.js';
  * Get Examination Library section detail page.
  *
  * @param {import('express').Request<{ caseId: string, slug: string }>} request
- * @param {import('express').Response<any, { case: { title: string } }>} response
+ * @param {import('express').Response<any, { case: { title: string }, caseId?: number }>} response
  * @returns {Promise<void>}
  */
 export async function getExaminationLibrarySection(request, response) {
-	const { caseId, slug: itemSlug } = request.params;
+	const { slug: itemSlug } = request.params;
 	const { sortBy, pageSize = 25, page = 1 } = request.query;
-	const caseIdNumber = Number(caseId);
+	const caseId = response.locals?.caseId || Number(request.params?.caseId);
 	const pageNumber = Number(page) || 1;
 	const pageSizeNumber = Number(pageSize) || 25;
 
@@ -58,7 +58,7 @@ export async function getExaminationLibrarySection(request, response) {
 					items: []
 				}),
 		sectionCategoryCode
-			? getExaminationLibraryCategories(caseIdNumber, { categoryCode: sectionCategoryCode }).catch(
+			? getExaminationLibraryCategories(caseId, { categoryCode: sectionCategoryCode }).catch(
 					() => []
 				)
 			: Promise.resolve([])
@@ -73,8 +73,8 @@ export async function getExaminationLibrarySection(request, response) {
 
 	const sectionStatus = isPublishedQuery ? 'published' : formatCategoryStatus(dbCategoryStatus);
 
-	const sectionUrl = url('examination-library-section', { caseId: caseIdNumber, slug: itemSlug });
-	const publishUrl = url('examination-library-publish', { caseId: caseIdNumber, slug: itemSlug });
+	const sectionUrl = url('examination-library-section', { caseId, slug: itemSlug });
+	const publishUrl = url('examination-library-publish', { caseId, slug: itemSlug });
 
 	const sectionViewModel = getExaminationLibrarySectionViewModel({
 		sectionDocuments,

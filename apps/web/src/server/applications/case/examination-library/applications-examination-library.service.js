@@ -29,7 +29,7 @@ export async function getExaminationLibrarySectionStatuses(caseId) {
 /**
  * Get documents for a given case and examination library category code
  *
- * @param { string} caseId
+ * @param {string | number} caseId
  * @param {string} categoryCode
  * @param {string} queryString
  * @returns {Promise<any>}

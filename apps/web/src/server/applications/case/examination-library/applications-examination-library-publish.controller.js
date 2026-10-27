@@ -20,13 +20,13 @@ import { url } from '../../../lib/nunjucks-filters/index.js';
  * Get Examination Library category check details and publish page.
  *
  * @param {import('express').Request<{ caseId: string, slug: string }>} request
- * @param {import('express').Response<any, { case: { title: string } }>} response
+ * @param {import('express').Response<any, { case: { title: string }, caseId?: number }>} response
  * @returns {Promise<void>}
  */
 export async function getExaminationLibraryPublish(request, response) {
-	const { caseId, slug: itemSlug } = request.params;
+	const { caseId: paramCaseId, slug: itemSlug } = request.params;
 	const { sortBy, pageSize = 25, page = 1 } = request.query;
-	const caseIdNumber = Number(caseId);
+	const caseId = response.locals?.caseId || Number(paramCaseId);
 	const pageNumber = Number(page) || 1;
 	const pageSizeNumber = Number(pageSize) || 25;
 
@@ -69,7 +69,7 @@ export async function getExaminationLibraryPublish(request, response) {
 	const unpublishedCount = Math.max(0, totalAllCount - totalPublishedCount);
 
 	const publishUrl = url('examination-library-publish', {
-		caseId: caseIdNumber,
+		caseId,
 		slug: itemSlug
 	});
 
@@ -79,7 +79,7 @@ export async function getExaminationLibraryPublish(request, response) {
 		totalPublishedCount,
 		unpublishedCount,
 		itemSlug,
-		caseId: caseIdNumber,
+		caseId,
 		projectName,
 		publishUrl
 	});
@@ -90,7 +90,7 @@ export async function getExaminationLibraryPublish(request, response) {
 
 	return response.render('applications/case-examination-library/examination-library-publish.njk', {
 		...viewModel,
-		caseId,
+		caseId: paramCaseId || caseId,
 		projectName,
 		pagination: getExaminationLibraryPagination(
 			request.query,
@@ -104,12 +104,12 @@ export async function getExaminationLibraryPublish(request, response) {
  * Handle publishing Examination Library category.
  *
  * @param {import('express').Request<{ caseId: string, slug: string }>} request
- * @param {import('express').Response} response
+ * @param {import('express').Response<any, { caseId?: number }>} response
  * @returns {Promise<void>}
  */
 export async function postExaminationLibraryPublish(request, response) {
-	const { caseId, slug: itemSlug } = request.params;
-	const caseIdNumber = Number(caseId);
+	const { slug: itemSlug } = request.params;
+	const caseId = response.locals?.caseId || Number(request.params?.caseId);
 
 	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
 
@@ -126,7 +126,7 @@ export async function postExaminationLibraryPublish(request, response) {
 	await publishExaminationLibraryCategory(caseId, { categoryCode: sectionCategoryCode });
 
 	const redirectUrl = `${url('examination-library-section', {
-		caseId: caseIdNumber,
+		caseId,
 		slug: itemSlug
 	})}?published=true`;
 
