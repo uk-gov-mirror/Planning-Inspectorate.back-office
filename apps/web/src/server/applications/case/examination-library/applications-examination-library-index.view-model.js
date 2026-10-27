@@ -24,7 +24,7 @@ import {
 /**
  * @typedef {object} SectionStatus
  * @property {string} slug
- * @property {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus} status
+ * @property {string} status
  */
 
 /**
@@ -32,7 +32,7 @@ import {
  *
  * @param {ExaminationLibraryItem} item
  * @param {number} caseId
- * @param {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus | undefined} sectionStatus
+ * @param {string} [sectionStatus]
  * @returns {object}
  */
 export const mapItemToViewModel = (item, caseId, sectionStatus) => ({
@@ -56,7 +56,7 @@ export const mapItemToViewModel = (item, caseId, sectionStatus) => ({
  *
  * @param {ExaminationLibrarySection} section
  * @param {number} caseId
- * @param {Map<string, import('./examination-library.constants.js').ExaminationLibraryCategoryStatus>} statusByCode
+ * @param {Map<string, string>} statusByCode
  * @returns {object}
  */
 export const mapSectionToViewModel = (section, caseId, statusByCode) => {

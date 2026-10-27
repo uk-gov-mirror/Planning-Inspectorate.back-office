@@ -5,7 +5,7 @@ import {
 	examinationLibrarySections
 } from './examination-library.constants.js';
 import { getExaminationLibraryCategories } from './applications-examination-library.service.js';
-import { formatCategoryStatus, getCategoryCode } from './applications-examination-library-utils.js';
+import { getCategoryCode } from './applications-examination-library-utils.js';
 
 /**
  * Get Examination Library index page
@@ -27,9 +27,7 @@ export async function getExaminationLibraryIndex(request, response) {
 
 			return {
 				slug: section.slug,
-				status: matchingCategory
-					? formatCategoryStatus(matchingCategory.publishedStatus)
-					: DEFAULT_SECTION_STATUS
+				status: matchingCategory?.publishedStatus || DEFAULT_SECTION_STATUS
 			};
 		});
 
