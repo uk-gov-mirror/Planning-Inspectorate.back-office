@@ -30,13 +30,11 @@ export async function getExaminationLibraryIndex(request, response) {
 			};
 		});
 
-	const indexViewModel = getExaminationLibraryIndexViewModel({
-		caseId,
-		sectionStatuses
-	});
-
 	return response.render(
 		`applications/case-examination-library/examination-library-index.njk`,
-		indexViewModel
+		getExaminationLibraryIndexViewModel({
+			caseId,
+			sectionStatuses
+		})
 	);
 }
