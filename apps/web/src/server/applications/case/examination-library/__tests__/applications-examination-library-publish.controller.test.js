@@ -5,7 +5,6 @@ import {
 	getExaminationLibraryPublish,
 	postExaminationLibraryPublish
 } from '../applications-examination-library-publish.controller.js';
-import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 
 describe('applications examination library publish controller', () => {
 	let req;
@@ -72,10 +71,7 @@ describe('applications examination library publish controller', () => {
 
 			nock('http://test/')
 				.get('/applications/123/examination-library/documents')
-				.query(
-					(query) =>
-						query.publishedStatus === APPLICATION_STATUS.PUBLISHED && query.categoryCode === 'APP'
-				)
+				.query((query) => query.publishedStatus === 'published' && query.categoryCode === 'APP')
 				.reply(200, mockPublishedDocs);
 
 			nock('http://test/')

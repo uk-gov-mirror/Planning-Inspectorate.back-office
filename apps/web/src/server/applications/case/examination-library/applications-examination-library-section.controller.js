@@ -4,7 +4,6 @@ import {
 } from './applications-examination-library.service.js';
 import { getExaminationLibrarySectionViewModel } from './applications-examination-library-section.view-model.js';
 import { categoryCodes, examinationLibrarySections } from './examination-library.constants.js';
-import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import {
 	formatCategoryStatus,
 	getSectionByItemSlug,
@@ -72,9 +71,7 @@ export async function getExaminationLibrarySection(request, response) {
 	const dbCategoryStatus = matchingCategory?.publishedStatus;
 	const isPublishedQuery = request.query.published === 'true';
 
-	const sectionStatus = isPublishedQuery
-		? APPLICATION_STATUS.PUBLISHED
-		: formatCategoryStatus(dbCategoryStatus);
+	const sectionStatus = isPublishedQuery ? 'published' : formatCategoryStatus(dbCategoryStatus);
 
 	const sectionUrl = url('examination-library-section', { caseId: caseIdNumber, slug: itemSlug });
 	const publishUrl = url('examination-library-publish', { caseId: caseIdNumber, slug: itemSlug });

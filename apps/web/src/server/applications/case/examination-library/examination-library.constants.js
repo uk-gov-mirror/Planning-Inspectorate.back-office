@@ -1,5 +1,3 @@
-import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
-
 /**
  * @typedef {import('./applications-examination-library-index.view-model.js').ExaminationLibraryItem} ExaminationLibraryItem
  */
@@ -7,6 +5,30 @@ import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 /**
  * @typedef {import('./applications-examination-library-index.view-model.js').ExaminationLibrarySection} ExaminationLibrarySection
  */
+
+/**
+ * @typedef {'in progress' | 'published' | 'unpublished'} ExaminationLibraryCategoryStatus
+ */
+
+/** @type {Record<string, { label: string, tagClass: string }>} */
+export const CATEGORY_STATUS = {
+	'in progress': { label: 'In progress', tagClass: 'govuk-tag--blue' },
+	published: { label: 'Published', tagClass: 'govuk-tag--green' },
+	unpublished: { label: 'Unpublished', tagClass: 'govuk-tag--grey' }
+};
+
+/**
+ * Default section status for Examination Library categories
+ *
+ * @type {ExaminationLibraryCategoryStatus}
+ */
+export const DEFAULT_SECTION_STATUS = 'in progress';
+
+export const getCategoryStatusTagClass = (/** @type {string} */ status) =>
+	CATEGORY_STATUS[status]?.tagClass || 'govuk-tag--grey';
+
+export const getCategoryStatusDisplayName = (/** @type {string} */ status) =>
+	CATEGORY_STATUS[status]?.label || status || '';
 
 /**
  * Examination Library category codes for documents
@@ -21,13 +43,6 @@ export const categoryCodes = {
 	OD: 'other-documents',
 	RR: 'relevant-representations'
 };
-
-/**
- * Default section status for Examination Library categories
- *
- * @type {import('@pins/applications/lib/status-utils.js').ApplicationStatus}
- */
-export const DEFAULT_SECTION_STATUS = APPLICATION_STATUS.IN_PROGRESS;
 
 /**
  * @type {string}

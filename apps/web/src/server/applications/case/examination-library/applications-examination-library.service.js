@@ -1,7 +1,7 @@
 import { get, post } from '../../../lib/request.js';
 
 /**
- * @typedef {import('@pins/applications/lib/status-utils.js').ApplicationStatus} ApplicationStatus
+ * @typedef {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus} ExaminationLibraryCategoryStatus
  */
 
 /**
@@ -20,7 +20,7 @@ export async function getExaminationLibraryCategories(caseId, filters = {}) {
  * Get examination library section statuses for a case
  *
  * @param {number} caseId
- * @returns {Promise<Array<{slug: string, status: ApplicationStatus}>>}
+ * @returns {Promise<Array<{slug: string, status: ExaminationLibraryCategoryStatus}>>}
  */
 export async function getExaminationLibrarySectionStatuses(caseId) {
 	return get(`applications/${caseId}/examination-library/section-statuses`);

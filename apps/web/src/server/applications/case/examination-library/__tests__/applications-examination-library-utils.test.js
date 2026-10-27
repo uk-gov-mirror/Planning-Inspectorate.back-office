@@ -8,7 +8,6 @@ import {
 	formatCategoryStatus
 } from '../applications-examination-library-utils.js';
 import { categoryCodes, examinationLibrarySections } from '../examination-library.constants.js';
-import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 
 describe('applications examination library utils', () => {
 	describe('#getSectionByItemSlug', () => {
@@ -258,29 +257,30 @@ describe('applications examination library utils', () => {
 	});
 
 	describe('#formatCategoryStatus', () => {
-		it('should return in-progress for null, undefined, or empty status', () => {
-			expect(formatCategoryStatus(null)).toBe(APPLICATION_STATUS.IN_PROGRESS);
-			expect(formatCategoryStatus(undefined)).toBe(APPLICATION_STATUS.IN_PROGRESS);
-			expect(formatCategoryStatus('')).toBe(APPLICATION_STATUS.IN_PROGRESS);
+		it('should return in progress for null, undefined, or empty status', () => {
+			expect(formatCategoryStatus(null)).toBe('in progress');
+			expect(formatCategoryStatus(undefined)).toBe('in progress');
+			expect(formatCategoryStatus('')).toBe('in progress');
 		});
 
-		it('should normalize DB "in progress" to "in-progress"', () => {
-			expect(formatCategoryStatus('in progress')).toBe(APPLICATION_STATUS.IN_PROGRESS);
-			expect(formatCategoryStatus('IN PROGRESS')).toBe(APPLICATION_STATUS.IN_PROGRESS);
+		it('should normalize DB "in progress" and "in-progress"', () => {
+			expect(formatCategoryStatus('in progress')).toBe('in progress');
+			expect(formatCategoryStatus('IN PROGRESS')).toBe('in progress');
+			expect(formatCategoryStatus('in-progress')).toBe('in progress');
 		});
 
 		it('should normalize "published"', () => {
-			expect(formatCategoryStatus('published')).toBe(APPLICATION_STATUS.PUBLISHED);
-			expect(formatCategoryStatus('PUBLISHED')).toBe(APPLICATION_STATUS.PUBLISHED);
+			expect(formatCategoryStatus('published')).toBe('published');
+			expect(formatCategoryStatus('PUBLISHED')).toBe('published');
 		});
 
 		it('should normalize "unpublished"', () => {
-			expect(formatCategoryStatus('unpublished')).toBe(APPLICATION_STATUS.UNPUBLISHED);
-			expect(formatCategoryStatus('UNPUBLISHED')).toBe(APPLICATION_STATUS.UNPUBLISHED);
+			expect(formatCategoryStatus('unpublished')).toBe('unpublished');
+			expect(formatCategoryStatus('UNPUBLISHED')).toBe('unpublished');
 		});
 
-		it('should fallback to in-progress for unknown statuses', () => {
-			expect(formatCategoryStatus('unknown_status')).toBe(APPLICATION_STATUS.IN_PROGRESS);
+		it('should fallback to in progress for unknown statuses', () => {
+			expect(formatCategoryStatus('unknown_status')).toBe('in progress');
 		});
 	});
 });

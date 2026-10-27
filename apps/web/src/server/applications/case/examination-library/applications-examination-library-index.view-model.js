@@ -1,6 +1,9 @@
 import { url } from '../../../lib/nunjucks-filters/url.js';
-import { getStatusTagClass, getStatusDisplayName } from '@pins/applications/lib/status-utils.js';
-import { examinationLibrarySections } from './examination-library.constants.js';
+import {
+	examinationLibrarySections,
+	getCategoryStatusTagClass,
+	getCategoryStatusDisplayName
+} from './examination-library.constants.js';
 
 /**
  * @typedef {object} ExaminationLibraryItem
@@ -21,7 +24,7 @@ import { examinationLibrarySections } from './examination-library.constants.js';
 /**
  * @typedef {object} SectionStatus
  * @property {string} slug
- * @property {import('@pins/applications/lib/status-utils.js').ApplicationStatus} status
+ * @property {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus} status
  */
 
 /**
@@ -29,7 +32,7 @@ import { examinationLibrarySections } from './examination-library.constants.js';
  *
  * @param {ExaminationLibraryItem} item
  * @param {number} caseId
- * @param {import('@pins/applications/lib/status-utils.js').ApplicationStatus | undefined} sectionStatus
+ * @param {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus | undefined} sectionStatus
  * @returns {object}
  */
 export const mapItemToViewModel = (item, caseId, sectionStatus) => ({
@@ -41,8 +44,8 @@ export const mapItemToViewModel = (item, caseId, sectionStatus) => ({
 	...(sectionStatus && {
 		status: {
 			tag: {
-				text: getStatusDisplayName(sectionStatus),
-				classes: `${getStatusTagClass(sectionStatus)} single-line`
+				text: getCategoryStatusDisplayName(sectionStatus),
+				classes: `${getCategoryStatusTagClass(sectionStatus)} single-line`
 			}
 		}
 	})
@@ -53,7 +56,7 @@ export const mapItemToViewModel = (item, caseId, sectionStatus) => ({
  *
  * @param {ExaminationLibrarySection} section
  * @param {number} caseId
- * @param {Map<string, import('@pins/applications/lib/status-utils.js').ApplicationStatus>} statusByCode
+ * @param {Map<string, import('./examination-library.constants.js').ExaminationLibraryCategoryStatus>} statusByCode
  * @returns {object}
  */
 export const mapSectionToViewModel = (section, caseId, statusByCode) => {

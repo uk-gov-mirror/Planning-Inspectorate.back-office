@@ -5,8 +5,6 @@ import supertest from 'supertest';
 import { createTestEnvironment } from '../../../../../../testing/index.js';
 import { fixtureExaminationLibraryIndex } from '../../../../../../testing/applications/fixtures/examination-library.js';
 import staticFlags from '@pins/feature-flags/src/static-feature-flags.js';
-import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
-
 const { app, installMockApi, teardown } = createTestEnvironment();
 const request = supertest(app);
 
@@ -30,32 +28,32 @@ const nocks = ({ includeDocuments = true } = {}) => {
 			{
 				categoryCode: 'APP',
 				categoryName: 'Application form',
-				publishedStatus: APPLICATION_STATUS.PUBLISHED
+				publishedStatus: 'published'
 			},
 			{
 				categoryCode: 'AoC',
 				categoryName: 'Adequacy of consultation responses',
-				publishedStatus: APPLICATION_STATUS.PUBLISHED
+				publishedStatus: 'published'
 			},
 			{
 				categoryCode: 'PD',
 				categoryName: 'Procedural decisions and notifications from Examining Authority',
-				publishedStatus: APPLICATION_STATUS.PUBLISHED
+				publishedStatus: 'published'
 			},
 			{
 				categoryCode: 'AS',
 				categoryName: 'Additional submissions',
-				publishedStatus: APPLICATION_STATUS.PUBLISHED
+				publishedStatus: 'published'
 			},
 			{
 				categoryCode: 'OD',
 				categoryName: 'Other documents',
-				publishedStatus: APPLICATION_STATUS.PUBLISHED
+				publishedStatus: 'published'
 			},
 			{
 				categoryCode: 'RR',
 				categoryName: 'Relevant representations',
-				publishedStatus: APPLICATION_STATUS.PUBLISHED
+				publishedStatus: 'published'
 			}
 		]);
 
