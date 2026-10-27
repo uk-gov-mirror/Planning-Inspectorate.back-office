@@ -1,10 +1,7 @@
 //@ts-nocheck
 import { getExaminationLibraryPublishViewModel } from '../applications-examination-library-publish.view-model.js';
-import { fixtureDynamicSections } from '../../../../../../testing/applications/fixtures/examination-library.js';
-
 describe('applications examination library publish view model', () => {
 	describe('#getExaminationLibraryPublishViewModel', () => {
-		const dynamicSections = fixtureDynamicSections;
 		const baseDocument = {
 			caseId: 123,
 			folderId: 1,
@@ -23,7 +20,6 @@ describe('applications examination library publish view model', () => {
 
 		it('should return null when section cannot be found', () => {
 			const result = getExaminationLibraryPublishViewModel({
-				dynamicSections,
 				sectionDocuments: [baseDocument],
 				totalPublishedCount: 1,
 				unpublishedCount: 0,
@@ -39,7 +35,6 @@ describe('applications examination library publish view model', () => {
 			const itemSlug = 'application-documents';
 
 			const result = getExaminationLibraryPublishViewModel({
-				dynamicSections,
 				sectionDocuments,
 				totalPublishedCount: 67,
 				unpublishedCount: 5,
@@ -87,7 +82,6 @@ describe('applications examination library publish view model', () => {
 
 		it('should not display unpublished callout when unpublishedCount is zero', () => {
 			const result = getExaminationLibraryPublishViewModel({
-				dynamicSections,
 				sectionDocuments: [baseDocument],
 				totalPublishedCount: 10,
 				unpublishedCount: 0,
@@ -107,7 +101,6 @@ describe('applications examination library publish view model', () => {
 			};
 
 			const result = getExaminationLibraryPublishViewModel({
-				dynamicSections,
 				sectionDocuments: [deletedDoc],
 				totalPublishedCount: 1,
 				unpublishedCount: 0,

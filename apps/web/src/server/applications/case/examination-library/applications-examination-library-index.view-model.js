@@ -19,32 +19,10 @@ import { examinationLibrarySections } from './examination-library.constants.js';
  */
 
 /**
- * @typedef {object} ExaminationLibraryDynamicSection
- * @property {string} slug
- * @property {ExaminationLibraryItem[]} items
- */
-
-/**
  * @typedef {object} SectionStatus
  * @property {string} slug
  * @property {import('@pins/applications/lib/status-utils.js').ApplicationStatus} status
  */
-
-/**
- * Merge static sections with any dynamic overrides, then sort by index
- *
- * @param {ExaminationLibrarySection[]} staticSections
- * @param {ExaminationLibraryDynamicSection[]} dynamicSections
- * @returns {ExaminationLibrarySection[]}
- */
-export const mergeSections = (staticSections, dynamicSections) => {
-	return staticSections
-		.map((section) => {
-			const dynamicOverride = dynamicSections.find((ds) => ds.slug === section.slug);
-			return dynamicOverride ? { ...section, items: dynamicOverride.items } : section;
-		})
-		.sort((a, b) => a.index - b.index);
-};
 
 /**
  * Map a single examination library item to its view model representation
@@ -89,19 +67,16 @@ export const mapSectionToViewModel = (section, caseId, statusByCode) => {
 };
 
 /**
- * @param {{ caseId: number, dynamicSections?: ExaminationLibraryDynamicSection[], sectionStatuses?: SectionStatus[] }} params
+ * @param {{ caseId: number, sectionStatuses?: SectionStatus[] }} params
  * @returns {{ sections: object[], selectedPageType: string }}
  */
-export const getExaminationLibraryIndexViewModel = ({
-	caseId,
-	dynamicSections = [],
-	sectionStatuses = []
-}) => {
+export const getExaminationLibraryIndexViewModel = ({ caseId, sectionStatuses = [] }) => {
 	const statusByCode = new Map(sectionStatuses.map(({ slug, status }) => [slug, status]));
-	const sections = mergeSections(examinationLibrarySections, dynamicSections);
 
 	return {
 		selectedPageType: 'examination-library',
-		sections: sections.map((section) => mapSectionToViewModel(section, caseId, statusByCode))
+		sections: examinationLibrarySections.map((section) =>
+			mapSectionToViewModel(section, caseId, statusByCode)
+		)
 	};
 };

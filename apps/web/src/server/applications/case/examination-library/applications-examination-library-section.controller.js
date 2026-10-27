@@ -3,11 +3,7 @@ import {
 	getExaminationLibraryDocumentsByCategory
 } from './applications-examination-library.service.js';
 import { getExaminationLibrarySectionViewModel } from './applications-examination-library-section.view-model.js';
-import {
-	categoryCodes,
-	examinationLibrarySections,
-	placeHolderDynamicSections
-} from './examination-library.constants.js';
+import { categoryCodes, examinationLibrarySections } from './examination-library.constants.js';
 import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import {
 	formatCategoryStatus,
@@ -37,9 +33,8 @@ export async function getExaminationLibrarySection(request, response) {
 	const pageSizeNumber = Number(pageSize) || 25;
 
 	const projectName = response.locals.case.title;
-	const dynamicSections = placeHolderDynamicSections;
 
-	const section = getSectionByItemSlug(examinationLibrarySections, dynamicSections, itemSlug);
+	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
 
 	if (!section) {
 		return response.status(404).render('app/404');
@@ -85,7 +80,6 @@ export async function getExaminationLibrarySection(request, response) {
 	const publishUrl = url('examination-library-publish', { caseId: caseIdNumber, slug: itemSlug });
 
 	const sectionViewModel = getExaminationLibrarySectionViewModel({
-		dynamicSections,
 		sectionDocuments,
 		sectionStatus,
 		itemSlug,

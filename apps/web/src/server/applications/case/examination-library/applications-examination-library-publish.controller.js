@@ -3,11 +3,7 @@ import {
 	publishExaminationLibraryCategory
 } from './applications-examination-library.service.js';
 import { getExaminationLibraryPublishViewModel } from './applications-examination-library-publish.view-model.js';
-import {
-	categoryCodes,
-	examinationLibrarySections,
-	placeHolderDynamicSections
-} from './examination-library.constants.js';
+import { categoryCodes, examinationLibrarySections } from './examination-library.constants.js';
 import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
 import {
 	getSectionByItemSlug,
@@ -36,9 +32,8 @@ export async function getExaminationLibraryPublish(request, response) {
 	const pageSizeNumber = Number(pageSize) || 25;
 
 	const projectName = response.locals?.case?.title || '';
-	const dynamicSections = placeHolderDynamicSections;
 
-	const section = getSectionByItemSlug(examinationLibrarySections, dynamicSections, itemSlug);
+	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
 
 	if (!section) {
 		return response.status(404).render('app/404');
@@ -117,9 +112,7 @@ export async function postExaminationLibraryPublish(request, response) {
 	const { caseId, slug: itemSlug } = request.params;
 	const caseIdNumber = Number(caseId);
 
-	const dynamicSections = placeHolderDynamicSections;
-
-	const section = getSectionByItemSlug(examinationLibrarySections, dynamicSections, itemSlug);
+	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
 
 	if (!section) {
 		return response.status(404).render('app/404');

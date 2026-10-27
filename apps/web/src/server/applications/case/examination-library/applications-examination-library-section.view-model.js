@@ -18,31 +18,25 @@ import { tableSortLinks } from './applications-examination-library-utils.js';
  */
 
 /**
- * @typedef {import('./applications-examination-library-index.view-model.js').ExaminationLibraryDynamicSection} ExaminationLibraryDynamicSection
- */
-
-/**
  * Get Examination Library section detail view model.
  *
  * @param {{
- *   dynamicSections?: ExaminationLibraryDynamicSection[],
  *   sectionDocuments: Array<any>,
  *   sectionStatus: import('@pins/applications/lib/status-utils.js').ApplicationStatus,
- *   itemSlug: string
- *   query: object
+ *   itemSlug: string,
+ *   query: object,
  *   sectionUrl: string
  * }} params
  * @returns {{ selectedPageType: string, sectionHeading: string, sectionStatus: string, sectionTable: object, sortLinks: object } | null}
  */
 export const getExaminationLibrarySectionViewModel = ({
-	dynamicSections = [],
 	sectionDocuments,
 	sectionStatus,
 	itemSlug,
 	query,
 	sectionUrl
 }) => {
-	const section = getSectionByItemSlug(examinationLibrarySections, dynamicSections, itemSlug);
+	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
 
 	if (!section) {
 		return null;

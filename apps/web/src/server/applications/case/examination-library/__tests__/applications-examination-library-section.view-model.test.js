@@ -1,11 +1,9 @@
 //@ts-nocheck
 import { getExaminationLibrarySectionViewModel } from '../applications-examination-library-section.view-model.js';
 import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
-import { fixtureDynamicSections } from '../../../../../../testing/applications/fixtures/examination-library.js';
 
 describe('applications examination library section view model', () => {
 	describe('#getExaminationLibrarySectionViewModel', () => {
-		const dynamicSections = fixtureDynamicSections;
 		const draftSectionStatus = APPLICATION_STATUS.DRAFT;
 		const publishedSectionStatus = APPLICATION_STATUS.PUBLISHED;
 		const baseDocument = {
@@ -32,7 +30,6 @@ describe('applications examination library section view model', () => {
 			const itemSlug = 'application-documents';
 
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments,
 				sectionStatus: draftSectionStatus,
 				itemSlug,
@@ -75,7 +72,6 @@ describe('applications examination library section view model', () => {
 			const itemSlug = 'additional-submissions';
 
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments,
 				sectionStatus: draftSectionStatus,
 				itemSlug,
@@ -125,7 +121,6 @@ describe('applications examination library section view model', () => {
 			const itemSlug = 'additional-submissions';
 
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments,
 				sectionStatus: publishedSectionStatus,
 				itemSlug,
@@ -173,7 +168,6 @@ describe('applications examination library section view model', () => {
 			const itemSlug = 'additional-submissions';
 
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments,
 				sectionStatus: publishedSectionStatus,
 				itemSlug,
@@ -208,7 +202,6 @@ describe('applications examination library section view model', () => {
 			const itemSlug = 'invalid-slug';
 
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments,
 				sectionStatus: draftSectionStatus,
 				itemSlug
@@ -219,7 +212,6 @@ describe('applications examination library section view model', () => {
 
 		it('should include the active sort in the view model', () => {
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments: [baseDocument],
 				sectionStatus: draftSectionStatus,
 				itemSlug: 'application-documents',
@@ -247,7 +239,6 @@ describe('applications examination library section view model', () => {
 
 		it('should display Reference heading when the section is published', () => {
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments: [baseDocument],
 				sectionStatus: publishedSectionStatus,
 				itemSlug: 'application-documents',
@@ -262,7 +253,6 @@ describe('applications examination library section view model', () => {
 
 		it('should display Draft reference heading when the section is in progress', () => {
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments: [baseDocument],
 				sectionStatus: draftSectionStatus,
 				itemSlug: 'application-documents',
@@ -288,7 +278,6 @@ describe('applications examination library section view model', () => {
 			];
 
 			const result = getExaminationLibrarySectionViewModel({
-				dynamicSections,
 				sectionDocuments,
 				sectionStatus: draftSectionStatus,
 				itemSlug: 'application-documents',

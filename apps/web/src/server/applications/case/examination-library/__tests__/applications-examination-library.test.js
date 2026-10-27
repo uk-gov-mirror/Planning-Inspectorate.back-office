@@ -106,14 +106,14 @@ describe('Examination Library', () => {
 			);
 		});
 
-		it('should render 10 static and dynamic sections as separate task lists with headings', async () => {
+		it('should render 6 static sections as separate task lists with headings', async () => {
 			const response = await request.get(`${baseUrl}`);
 			const element = parseHtml(response.text);
 
 			expect(response.status).toBe(200);
 
 			const taskLists = element.querySelectorAll('.govuk-task-list');
-			expect(taskLists.length).toBe(10);
+			expect(taskLists.length).toBe(6);
 
 			expect(element.innerHTML).toContain('Application documents');
 			expect(element.innerHTML).toContain('Adequacy of consultation responses');
@@ -122,10 +122,6 @@ describe('Examination Library', () => {
 				'Procedural decisions and notifications from Examining Authority'
 			);
 			expect(element.innerHTML).toContain('Additional submissions');
-			expect(element.innerHTML).toContain('Change requests');
-			expect(element.innerHTML).toContain('Events and hearings');
-			expect(element.innerHTML).toContain('Procedural deadlines');
-			expect(element.innerHTML).toContain('Deadlines');
 			expect(element.innerHTML).toContain('Other documents');
 		});
 
@@ -190,7 +186,7 @@ describe('Examination Library', () => {
 
 			expect(response.status).toBe(200);
 			const taskLinks = element.querySelectorAll('.govuk-task-list__link');
-			expect(taskLinks.length).toBe(14);
+			expect(taskLinks.length).toBe(6);
 		});
 
 		it('should NOT render the page when feature flag is OFF', async () => {
@@ -215,15 +211,6 @@ describe('Examination Library', () => {
 
 			expect(response.status).toBe(200);
 			expect(element.innerHTML).toContain('Application documents');
-			expect(element.innerHTML).toContain('Items in the examination library');
-		});
-
-		it('should display dynamic category subpages', async () => {
-			const response = await request.get(`${baseUrl}/category/procedural-deadlines-1`);
-			const element = parseHtml(response.text);
-
-			expect(response.status).toBe(200);
-			expect(element.innerHTML).toContain('Procedural deadlines 1');
 			expect(element.innerHTML).toContain('Items in the examination library');
 		});
 

@@ -9,10 +9,6 @@ import { APPLICATION_STATUS } from '@pins/applications/lib/status-utils.js';
  */
 
 /**
- * @typedef {import('./applications-examination-library-index.view-model.js').ExaminationLibraryDynamicSection} ExaminationLibraryDynamicSection
- */
-
-/**
  * Examination Library category codes for documents
  *
  * @type {{APP: string, AoC: string, PD: string, AS: string, OD: string, RR: string}}
@@ -161,67 +157,5 @@ export const examinationLibrarySections = [
 			}
 		],
 		tableHeaders: tableHeadersWithAuthor
-	}
-];
-
-/**
- * Placeholder data for dynamic Examination Library categories
- *
- * This temporary static data is in use until dynamic category data can be fetched from the database
- *
- * @type {ExaminationLibraryDynamicSection[]}
- */
-export const placeHolderDynamicSections = [
-	{
-		slug: 'change-requests',
-		items: [
-			{
-				title: 'Change request 1',
-				href: 'change-request-1'
-			},
-			{
-				title: 'Change request 2',
-				href: 'change-request-2'
-			}
-		]
-	},
-	{
-		slug: 'events-and-hearings',
-		items: [
-			{
-				title: 'Events and hearings 1',
-				href: 'events-and-hearings-1'
-			},
-			{
-				title: 'Events and hearings 2',
-				href: 'events-and-hearings-2'
-			}
-		]
-	},
-	{
-		slug: 'procedural-deadlines',
-		items: [
-			{
-				title: 'Procedural deadlines 1',
-				href: 'procedural-deadlines-1'
-			},
-			{
-				title: 'Procedural deadlines 2',
-				href: 'procedural-deadlines-2'
-			}
-		]
-	},
-	{
-		slug: 'deadlines',
-		items: [
-			{
-				title: 'Deadlines 1',
-				href: 'deadlines-1'
-			},
-			{
-				title: 'Deadlines 2',
-				href: 'deadlines-2'
-			}
-		]
 	}
 ];

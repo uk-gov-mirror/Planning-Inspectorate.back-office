@@ -5,7 +5,6 @@ import { getSectionByItemSlug, getCategoryCode } from './applications-examinatio
 
 /**
  * @typedef {import('./applications-examination-library-index.view-model.js').ExaminationLibrarySection} ExaminationLibrarySection
- * @typedef {import('./applications-examination-library-index.view-model.js').ExaminationLibraryDynamicSection} ExaminationLibraryDynamicSection
  * @typedef {import('./applications-examination-library-utils.js').ExaminationLibrarySectionDocument} ExaminationLibrarySectionDocument
  */
 
@@ -13,7 +12,6 @@ import { getSectionByItemSlug, getCategoryCode } from './applications-examinatio
  * Get Examination Library check details and publish view model.
  *
  * @param {{
- *   dynamicSections?: ExaminationLibraryDynamicSection[],
  *   section?: ExaminationLibrarySection,
  *   sectionDocuments: Array<any>,
  *   totalPublishedCount: number,
@@ -26,7 +24,6 @@ import { getSectionByItemSlug, getCategoryCode } from './applications-examinatio
  * @returns {object | null}
  */
 export const getExaminationLibraryPublishViewModel = ({
-	dynamicSections = [],
 	section,
 	sectionDocuments = [],
 	totalPublishedCount = 0,
@@ -36,8 +33,7 @@ export const getExaminationLibraryPublishViewModel = ({
 	projectName = '',
 	publishUrl
 }) => {
-	const resolvedSection =
-		section || getSectionByItemSlug(examinationLibrarySections, dynamicSections, itemSlug);
+	const resolvedSection = section || getSectionByItemSlug(examinationLibrarySections, itemSlug);
 
 	if (!resolvedSection) {
 		return null;

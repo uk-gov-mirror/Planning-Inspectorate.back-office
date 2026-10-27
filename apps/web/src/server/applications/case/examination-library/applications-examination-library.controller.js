@@ -2,8 +2,7 @@ import { getExaminationLibraryIndexViewModel } from './applications-examination-
 import {
 	categoryCodes,
 	DEFAULT_SECTION_STATUS,
-	examinationLibrarySections,
-	placeHolderDynamicSections
+	examinationLibrarySections
 } from './examination-library.constants.js';
 import { getExaminationLibraryCategories } from './applications-examination-library.service.js';
 import { formatCategoryStatus, getCategoryCode } from './applications-examination-library-utils.js';
@@ -36,7 +35,6 @@ export async function getExaminationLibraryIndex(request, response) {
 
 	const indexViewModel = getExaminationLibraryIndexViewModel({
 		caseId: caseIdNumber,
-		dynamicSections: placeHolderDynamicSections,
 		sectionStatuses
 	});
 
