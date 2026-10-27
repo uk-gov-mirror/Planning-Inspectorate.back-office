@@ -18,16 +18,6 @@ export async function getExaminationLibraryCategories(caseId, filters = {}) {
 }
 
 /**
- * Get examination library section statuses for a case
- *
- * @param {number} caseId
- * @returns {Promise<Array<{slug: string, status: ExaminationLibraryCategoryStatus}>>}
- */
-export async function getExaminationLibrarySectionStatuses(caseId) {
-	return get(`applications/${caseId}/examination-library/section-statuses`);
-}
-
-/**
  * Get documents for a given case and examination library category code
  *
  * @param {string | number} caseId
