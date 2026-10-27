@@ -39,14 +39,11 @@ describe('applications examination library publish view model', () => {
 				totalPublishedCount: 67,
 				unpublishedCount: 5,
 				itemSlug,
-				caseId: 123,
-				projectName: 'Test Project'
+				caseId: 123
 			});
 
 			expect(result).toEqual({
 				selectedPageType: 'examination-library',
-				pageTitle:
-					'Check details and publish Application documents to the examination library - Test Project - NSIP applications',
 				sectionHeading: 'Application documents',
 				backLink:
 					'/applications-service/case/123/examination-library/category/application-documents',

@@ -18,7 +18,6 @@ import { getSectionByItemSlug, getCategoryCode } from './applications-examinatio
  *   unpublishedCount: number,
  *   itemSlug: string,
  *   caseId: number,
- *   projectName?: string,
  *   publishUrl?: string
  * }} params
  * @returns {object | null}
@@ -30,7 +29,6 @@ export const getExaminationLibraryPublishViewModel = ({
 	unpublishedCount = 0,
 	itemSlug,
 	caseId,
-	projectName = '',
 	publishUrl
 }) => {
 	const resolvedSection = section || getSectionByItemSlug(examinationLibrarySections, itemSlug);
@@ -106,9 +104,6 @@ export const getExaminationLibraryPublishViewModel = ({
 
 	return {
 		selectedPageType: 'examination-library',
-		pageTitle: `Check details and publish ${sectionHeading} to the examination library${
-			projectName ? ` - ${projectName}` : ''
-		} - NSIP applications`,
 		sectionHeading,
 		backLink,
 		publishUrl: formPublishUrl,

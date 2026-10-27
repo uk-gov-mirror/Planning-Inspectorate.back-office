@@ -30,8 +30,6 @@ export async function getExaminationLibraryPublish(request, response) {
 	const pageNumber = Number(page) || 1;
 	const pageSizeNumber = Number(pageSize) || 25;
 
-	const projectName = response.locals?.case?.title || '';
-
 	const section = getSectionByItemSlug(examinationLibrarySections, itemSlug);
 	const sectionCategoryCode = section ? getCategoryCode(section, categoryCodes) : '';
 
@@ -74,7 +72,6 @@ export async function getExaminationLibraryPublish(request, response) {
 		unpublishedCount,
 		itemSlug,
 		caseId,
-		projectName,
 		publishUrl
 	});
 
@@ -85,7 +82,6 @@ export async function getExaminationLibraryPublish(request, response) {
 	return response.render('applications/case-examination-library/examination-library-publish.njk', {
 		...viewModel,
 		caseId: paramCaseId || caseId,
-		projectName,
 		pagination: getExaminationLibraryPagination(
 			request.query,
 			publishedDocumentsResponse,
