@@ -3,9 +3,12 @@ import {
 	getExaminationLibraryDocumentsByCategory
 } from './applications-examination-library.service.js';
 import { getExaminationLibrarySectionViewModel } from './applications-examination-library-section.view-model.js';
-import { categoryCodes, examinationLibrarySections } from './examination-library.constants.js';
 import {
-	formatCategoryStatus,
+	categoryCodes,
+	DEFAULT_SECTION_STATUS,
+	examinationLibrarySections
+} from './examination-library.constants.js';
+import {
 	getSectionByItemSlug,
 	getCategoryCode,
 	getExaminationLibraryPagination
@@ -56,7 +59,7 @@ export async function getExaminationLibrarySection(request, response) {
 	const dbCategoryStatus = matchingCategory?.publishedStatus;
 	const isPublishedQuery = request.query.published === 'true';
 
-	const sectionStatus = isPublishedQuery ? 'published' : formatCategoryStatus(dbCategoryStatus);
+	const sectionStatus = isPublishedQuery ? 'published' : dbCategoryStatus || DEFAULT_SECTION_STATUS;
 
 	const sectionUrl = url('examination-library-section', { caseId, slug: itemSlug });
 	const publishUrl = url('examination-library-publish', { caseId, slug: itemSlug });

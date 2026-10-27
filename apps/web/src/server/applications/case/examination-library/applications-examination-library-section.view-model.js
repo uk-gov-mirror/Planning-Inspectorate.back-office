@@ -24,7 +24,7 @@ import { tableSortLinks } from './applications-examination-library-utils.js';
  *
  * @param {{
  *   sectionDocuments: Array<any>,
- *   sectionStatus: import('./examination-library.constants.js').ExaminationLibraryCategoryStatus,
+ *   sectionStatus: string,
  *   itemSlug: string,
  *   query: object,
  *   sectionUrl: string
