@@ -1,4 +1,3 @@
-import { CATEGORY_STATUS, DEFAULT_SECTION_STATUS } from './examination-library.constants.js';
 import { url } from '../../../lib/nunjucks-filters/index.js';
 import {
 	getResultsPerPage,
@@ -157,22 +156,3 @@ export const tableSortLinks = (query, headers, sectionUrl, isPublished) =>
 				return tableSortingHeaderLinks(query, header, '', sectionUrl);
 		}
 	});
-
-/**
- * Normalizes an Examination Library category status from the database/API.
- *
- * @param {string | undefined | null} status
- * @returns {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus}
- */
-export const formatCategoryStatus = (status) => {
-	if (!status) {
-		return DEFAULT_SECTION_STATUS;
-	}
-	const normalized = status.toLowerCase().trim().replace('-', ' ');
-	if (normalized in CATEGORY_STATUS) {
-		return /** @type {import('./examination-library.constants.js').ExaminationLibraryCategoryStatus} */ (
-			normalized
-		);
-	}
-	return DEFAULT_SECTION_STATUS;
-};

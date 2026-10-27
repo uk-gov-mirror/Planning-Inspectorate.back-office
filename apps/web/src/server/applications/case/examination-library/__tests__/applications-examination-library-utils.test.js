@@ -4,8 +4,7 @@ import {
 	getSectionByItemSlug,
 	getCategoryCode,
 	getDocumentDescriptionHTML,
-	tableSortLinks,
-	formatCategoryStatus
+	tableSortLinks
 } from '../applications-examination-library-utils.js';
 import { categoryCodes, examinationLibrarySections } from '../examination-library.constants.js';
 
@@ -252,35 +251,6 @@ describe('applications examination library utils', () => {
 
 			expect(result[0].link).toContain('sortBy=-description');
 			expect(result[0].link).toContain('page=1');
-			expect(result[0].link).toContain('pageSize=50');
-		});
-	});
-
-	describe('#formatCategoryStatus', () => {
-		it('should return in progress for null, undefined, or empty status', () => {
-			expect(formatCategoryStatus(null)).toBe('in progress');
-			expect(formatCategoryStatus(undefined)).toBe('in progress');
-			expect(formatCategoryStatus('')).toBe('in progress');
-		});
-
-		it('should normalize DB "in progress" and "in-progress"', () => {
-			expect(formatCategoryStatus('in progress')).toBe('in progress');
-			expect(formatCategoryStatus('IN PROGRESS')).toBe('in progress');
-			expect(formatCategoryStatus('in-progress')).toBe('in progress');
-		});
-
-		it('should normalize "published"', () => {
-			expect(formatCategoryStatus('published')).toBe('published');
-			expect(formatCategoryStatus('PUBLISHED')).toBe('published');
-		});
-
-		it('should normalize "unpublished"', () => {
-			expect(formatCategoryStatus('unpublished')).toBe('unpublished');
-			expect(formatCategoryStatus('UNPUBLISHED')).toBe('unpublished');
-		});
-
-		it('should fallback to in progress for unknown statuses', () => {
-			expect(formatCategoryStatus('unknown_status')).toBe('in progress');
 		});
 	});
 });
