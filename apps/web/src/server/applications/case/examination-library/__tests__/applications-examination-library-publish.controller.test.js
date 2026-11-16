@@ -312,6 +312,16 @@ describe('applications examination library publish controller', () => {
 				.query((query) => query.categoryCode === 'APP')
 				.reply(200, [{ categoryCode: 'APP', publishedStatus: 'published' }]);
 
+			nock('http://test/')
+				.get('/applications/123/examination-library/documents')
+				.query(
+					(query) =>
+						query.publishedStatus === 'published' &&
+						query.categoryCode === 'APP' &&
+						query.examinationRefNo === 'true'
+				)
+				.reply(200, { page: 1, pageSize: 1, pageCount: 1, itemCount: 1, items: [] });
+
 			await getExaminationLibraryUpdate(req, res);
 
 			expect(res.render).toHaveBeenCalledWith(
@@ -362,6 +372,16 @@ describe('applications examination library publish controller', () => {
 				.get('/applications/123/examination-library')
 				.query((query) => query.categoryCode === 'APP')
 				.reply(200, [{ categoryCode: 'APP', publishedStatus: 'published' }]);
+
+			nock('http://test/')
+				.get('/applications/123/examination-library/documents')
+				.query(
+					(query) =>
+						query.publishedStatus === 'published' &&
+						query.categoryCode === 'APP' &&
+						query.examinationRefNo === 'true'
+				)
+				.reply(200, { page: 1, pageSize: 1, pageCount: 1, itemCount: 1, items: [] });
 
 			nock('http://test/')
 				.get('/applications/123/examination-library/documents')

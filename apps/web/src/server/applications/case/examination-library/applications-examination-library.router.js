@@ -3,6 +3,7 @@ import { asyncHandler } from '@pins/express';
 import * as controller from './applications-examination-library.controller.js';
 import * as sectionController from './applications-examination-library-section.controller.js';
 import * as publishController from './applications-examination-library-publish.controller.js';
+import * as unpublishController from './applications-examination-library-unpublish.controller.js';
 
 const applicationsExamLibraryRouter = createRouter({ mergeParams: true });
 
@@ -18,5 +19,9 @@ applicationsExamLibraryRouter
 	.route('/category/:slug/update')
 	.get(asyncHandler(publishController.getExaminationLibraryUpdate))
 	.post(asyncHandler(publishController.postExaminationLibraryUpdate));
+applicationsExamLibraryRouter
+	.route('/category/:slug/unpublish')
+	.get(asyncHandler(unpublishController.getExaminationLibraryUnpublish))
+	.post(asyncHandler(unpublishController.postExaminationLibraryUnpublish));
 
 export default applicationsExamLibraryRouter;

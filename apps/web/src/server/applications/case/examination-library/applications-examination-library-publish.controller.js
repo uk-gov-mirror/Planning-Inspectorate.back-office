@@ -27,7 +27,7 @@ const EMPTY_CATEGORY_ERROR =
  * @param {string} errors
  * @returns {void}
  */
-function renderSectionPageWithError(response, sectionData, caseId, query, errors) {
+export function renderSectionPageWithError(response, sectionData, caseId, query, errors) {
 	return response.render('applications/case-examination-library/examination-library-section.njk', {
 		...sectionData.sectionViewModel,
 		caseId,
@@ -81,10 +81,29 @@ async function renderCheckDetailsPage(request, response, { isUpdate }) {
 		page: 1
 	});
 
-	const [publishedDocumentsResponse, allDocumentsResponse, categoriesResponse] = await Promise.all([
+	const lockedQueryString = buildQueryString({
+		pageSize: 1,
+		page: 1,
+		publishedStatus: 'published',
+		examinationRefNo: 'true'
+	});
+
+	const [
+		publishedDocumentsResponse,
+		allDocumentsResponse,
+		categoriesResponse,
+		lockedDocumentsResponse
+	] = await Promise.all([
 		getExaminationLibraryDocumentsByCategory(caseId, sectionCategoryCode, publishedQueryString),
 		getExaminationLibraryDocumentsByCategory(caseId, sectionCategoryCode, allQueryString),
-		getExaminationLibraryCategories(caseId, { categoryCode: sectionCategoryCode }).catch(() => [])
+		getExaminationLibraryCategories(caseId, { categoryCode: sectionCategoryCode }).catch(() => []),
+		isUpdate
+			? getExaminationLibraryDocumentsByCategory(
+					caseId,
+					sectionCategoryCode,
+					lockedQueryString
+				).catch(() => null)
+			: null
 	]);
 
 	/** @type {ExaminationLibrarySectionDocument[]} */
@@ -96,25 +115,15 @@ async function renderCheckDetailsPage(request, response, { isUpdate }) {
 	const matchingCategory = categoriesResponse?.find((c) => c.categoryCode === sectionCategoryCode);
 	const categoryStatus = matchingCategory?.publishedStatus?.toLowerCase();
 
-	/** @param {ExaminationLibrarySectionDocument} doc */
-	const isUnlockedPublishedDoc = (doc) =>
-		!doc?.isDeleted && !doc?.latestDocumentVersion?.examinationLibraryReferenceLocked;
+	const lockedPublishedCount = lockedDocumentsResponse?.itemCount ?? 0;
+	const totalAwaitingELPublicationCount = Math.max(0, totalPublishedCount - lockedPublishedCount);
 
 	let additionalCount = 0;
 	let isInvalidState;
 
 	if (isUpdate) {
-		let hasNewPublishedDocuments = sectionDocuments.some(isUnlockedPublishedDoc);
-		if (!hasNewPublishedDocuments && (publishedDocumentsResponse?.pageCount ?? 1) > 1) {
-			const allPublishedResponse = await getExaminationLibraryDocumentsByCategory(
-				caseId,
-				sectionCategoryCode,
-				buildQueryString({ publishedStatus: 'published', pageSize: 1000, page: 1 })
-			).catch(() => null);
-			hasNewPublishedDocuments = Boolean(allPublishedResponse?.items?.some(isUnlockedPublishedDoc));
-		}
-		isInvalidState = categoryStatus !== 'published' || !hasNewPublishedDocuments;
-		additionalCount = sectionDocuments.filter(isUnlockedPublishedDoc).length;
+		isInvalidState = categoryStatus !== 'published' || totalAwaitingELPublicationCount === 0;
+		additionalCount = totalAwaitingELPublicationCount;
 	} else {
 		// category cannot be published if it is already published, or has no published documents
 		isInvalidState = categoryStatus === 'published' || totalPublishedCount === 0;

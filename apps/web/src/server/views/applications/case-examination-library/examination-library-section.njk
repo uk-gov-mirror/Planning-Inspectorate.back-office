@@ -41,18 +41,25 @@
 		Once an examination library category has been published, the examination library references are final and cannot be changed.
 	</p>
 
-	{% if sectionStatus | lower != 'published' %}
+	{% if sectionStatus | lower == 'published' %}
+		<div class="govuk-button-group govuk-!-margin-bottom-6">
+			{% if hasUpdatesToPublish %}
+				{{ govukButton({
+					text: "Preview and publish updates to library",
+					href: updateUrl
+				}) }}
+			{% endif %}
+			{{ govukButton({
+				text: "Unpublish from library",
+				href: unpublishUrl,
+				classes: "govuk-button--secondary"
+			}) }}
+		</div>
+	{% else %}
 		<div class="govuk-!-margin-bottom-6">
 			{{ govukButton({
 				text: "Preview and publish category to library",
 				href: publishUrl
-			}) }}
-		</div>
-	{% elseif hasUpdatesToPublish %}
-		<div class="govuk-!-margin-bottom-6">
-			{{ govukButton({
-				text: "Preview and publish updates to library",
-				href: updateUrl
 			}) }}
 		</div>
 	{% endif %}
